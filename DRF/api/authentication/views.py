@@ -14,8 +14,9 @@ class SignUpView(generics.GenericAPIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        email = serializer._validated_data.get("email")
-        phone = serializer._validated_data.get("phone")
+        email = serializer.validated_data.get("email")
+        phone = serializer.validated_data.get("phone")
+        password = serializer.validated_data.get("password")
         user_exist = CustomUser.objects.filter(email=email).first()
         if user_exist:
             return Response({"error": "Email already exists"}, status=400)
@@ -23,7 +24,9 @@ class SignUpView(generics.GenericAPIView):
         if phone_exist:
             return Response({"error": "Phone Number already exists"}, status=400)
         
-        serializer.save()
+        user = serializer.save()
+        user.set_password(password)
+        user.save()
         return Response(serializer.data, status=201)
     
 class LoginView(generics.GenericAPIView):
