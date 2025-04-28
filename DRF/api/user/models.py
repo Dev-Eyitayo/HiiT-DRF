@@ -33,12 +33,15 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, firstname, lastname, password=None, **extra_fields):
         if password is None:
             raise TypeError("Password should not be none")
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_verified', True)
-        extra_fields.setdefault('user_type', 'ADMIN')
         
-        return self.create_user(email, firstname, lastname, password, **extra_fields)
+        user = self.create_user(email, firstname, lastname, password, **extra_fields)
+        user.is_superuser = True
+        user.is_staff = True
+        user.is_verified = True
+        user.user_type = 'ADMIN'
+        user.save()
+
+        return user
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
