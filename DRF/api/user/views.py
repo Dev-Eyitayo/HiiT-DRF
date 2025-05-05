@@ -26,7 +26,7 @@ class UserSchoolView(generics.GenericAPIView):
         return Response(data = {"message": "Done"}, status=201)
     
 class UserFanView(generics.GenericAPIView):
-    serializer = UserSchoolFanSerializer
+    serializer_class = UserSchoolFanSerializer
     
     def post(self, request):
         return Response(data = {"message": "Data received"}, status=201)

@@ -112,6 +112,18 @@ REST_FRAMEWORK = {
     ]
 }
 
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+    'api_key': {
+        'type': 'apiKey',
+        'name': 'Authorization',
+        'in': 'header'
+    }
+    },
+    'USE_SESSION_AUTH': False,
+}
+
+
 AUTH_USER_MODEL = 'user.CustomUser'
 
 
